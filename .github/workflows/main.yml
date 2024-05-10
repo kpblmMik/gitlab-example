@@ -2,7 +2,7 @@ name: ci-cd pipeline
 on:
   push:
     branches:
-      - main
+      - master
 jobs:
   test:
     runs-on: ubuntu-latest
