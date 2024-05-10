@@ -1,25 +1,36 @@
 name: ci-cd pipeline
-on:
-  push:
-    branches:
-      - master
+on: [push]
+env:
+    IMAGE_NAME: kpblm256/gitlab_example
+    IMAGE_TAG: 2.0.0
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
-      - name: Install packages
-        run: |
-            python -m pip install --upgrade pip
-            pip install -Ur src/requirements.txt
-      - name: Run tests
-        run: |
-            pytest -v src/app
-
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - name: set up python
+              uses: actions/setup-python@v5
+              with:
+                python-version: '3.12'
+            - name: install packages
+              run: |
+                python -m pip install --upgrade pip
+                pip install -Ur src/requirements.txt
+            - name: run-tests
+              run: pytest -v src
+    build:
+        runs-on: ubuntu-latest
+        needs: test
+        steps:
+            - uses: actions/checkout@v4
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+            - name: Log in to DockerHub
+              uses: docker/login-action@v3
+              with:
+                username: ${{ secrets.DOCKER_USERNAME }}
+                password: ${{ secrets.DOCKER_TOKEN }}
+            - name: Build and push
+              run: |
+                docker build -t ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
+                docker push ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
