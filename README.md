@@ -10,7 +10,7 @@ Wir wollen eine einfache CI/CD Pipeline bauen.
 - Gitlab CI/CD ist in Gitlab integriert und wird in der Gitlab-Datei definiert
 ![alt text](cicd-pipeline.png)
   
-### Was ist CI/CD?de
+### Was ist CI/CD?deq
 - CI/CD steht für Continuous Integration/Continuous Deployment bzw. Delivery
 - Continuous Integration: Automatisches Zusammenführen von Codeänderungen in einem gemeinsamen Repository
 - Continuous Deployment: Automatisches Bereitstellen von Codeänderungen in einer Produktionsumgebung
